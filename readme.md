@@ -26,51 +26,68 @@ oil.csv	Daily oil prices (economic proxy)
 transactions.csv	Store transaction counts
 sample_submission.csv	Kaggle submission template
 
-favorita-forecasting/
-│
-├── README.md
-├── requirements.txt
-├── .gitignore
-│
-├── data/
-│   ├── bronze/
-│   │   ├── train.csv
-│   │   ├── items.csv
-│   │   ├── stores.csv
-│   │   ├── holidays_events.csv
-│   │   └── oil.csv
-│   │
-│   ├── silver/
-│   │   ├── cleaned_train.parquet
-│   │   ├── merged_data.parquet
-│   │   └── features_intermediate.parquet
-│   │
-│   └── gold/
-│       └── modeling_ready_features.parquet
-│
-├── notebooks/
-│   ├── 01_exploration.ipynb
-│   ├── 02_cleaning_and_joining.ipynb
-│   ├── 03_feature_engineering.ipynb
-│   ├── 04_model_training.ipynb
-│   └── 05_evaluation.ipynb
-│
-├── src/
-│   ├── data_prep/
-│   │   ├── load_data.py
-│   │   ├── clean_data.py
-│   │   ├── join_data.py
-│   │   └── feature_engineering.py
-│   │
-│   ├── models/
-│   │   ├── xgboost_model.py
-│   │   ├── prophet_model.py
-│   │   └── evaluation.py
-│   │
-│   └── utils/
-│       └── helpers.py
-│
-└── outputs/
-    ├── model_artifacts/
-    ├── plots/
-    └── submissions/
+# 🛒 Retail Demand Forecasting using Microsoft Fabric (End-to-End)
+
+This project builds a full **Retail Demand Forecasting Pipeline** using the
+[Corporación Favorita Grocery Sales Forecasting](https://www.kaggle.com/competitions/favorita-grocery-sales-forecasting)
+dataset, implemented entirely in **Microsoft Fabric** with a
+**Bronze → Silver → Gold** medallion architecture.
+
+The system supports:
+- Data ingestion into **Fabric Lakehouse**
+- Data cleaning & transformations (Bronze → Silver)
+- Automated feature engineering
+- Training **per store–item forecasting models**
+- Saving models, predictions, metrics to Gold layer
+- Visualizing forecasts in **Power BI**
+- Scalable execution using Fabric Spark
+
+---
+
+## 📂 Project Architecture
+
+### Medallion Layers
+| Layer | Description |
+|-------|-------------|
+| **Bronze** | Raw Kaggle CSVs |
+| **Silver** | Cleaned + merged + enriched data |
+| **Gold** | Features, ML models, predictions, metrics |
+
+### Microsoft Fabric Tools Used
+- **OneLake / Lakehouse**
+- **Fabric Notebooks (PySpark + Python)**
+- **Fabric Spark**
+- **Power BI Semantic Model**
+- **MLflow-compatible model saving**
+
+---
+
+## 🚀 Pipeline Overview
+
+1. **Ingest Raw Files → Bronze**
+2. **Clean + Transform → Silver**
+3. **Feature Engineering**
+   - Lag features (1, 7, 14, 28)
+   - Rolling windows
+   - Holidays, oil price, transactions
+4. **Train LightGBM for each store-item pair**
+5. **Save results:**
+   - `/gold/models/`
+   - `/gold/predictions/`
+   - `/gold/metrics/`
+6. **Publish Power BI dashboard**
+
+---
+
+## 🧪 Model Summary
+
+Each store-item series trains an individual LightGBM regression model.
+
+Metrics captured:
+- **MAE**
+- **RMSE**
+- **MAPE**
+
+Example output:
+```text
+Completed store 29 item 874990 | MAE=1.19 RMSE=1.47
