@@ -26,6 +26,21 @@ oil.csv	Daily oil prices (economic proxy)
 transactions.csv	Store transaction counts
 sample_submission.csv	Kaggle submission template
 
+📝 Dataset
+
+The project uses the public Corporación Favorita Grocery Sales Forecasting
+dataset:
+
+125M+ rows
+
+5 years of daily sales
+
+54 stores
+
+~4000 items
+
+Oil prices, holidays, transactions
+
 # 🛒 Retail Demand Forecasting using Microsoft Fabric (End-to-End)
 
 This project builds a full **Retail Demand Forecasting Pipeline** using the
